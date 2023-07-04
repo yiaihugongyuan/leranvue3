@@ -1,0 +1,3 @@
+<template>
+    <p>主页组件</p>
+</template>

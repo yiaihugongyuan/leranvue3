@@ -1,16 +1,11 @@
 <script setup>
 import 'element-plus/es/components/message/style/css'
-import { ElMessage } from 'element-plus'
-const msg = ()=>{
-    ElMessage('this is a message.')
-    }
+import AppContainer from '@/layout/layoutContainer.vue'
 
 </script>
 
 <template>
- <el-button @click="msg">hello</el-button>
+    <AppContainer></AppContainer>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
