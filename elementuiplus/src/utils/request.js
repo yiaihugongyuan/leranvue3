@@ -21,6 +21,7 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['user-token'] = token
     }
+    log(config)
     return config
   },
   error => {

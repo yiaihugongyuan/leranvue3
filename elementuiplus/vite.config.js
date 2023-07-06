@@ -26,10 +26,10 @@ export default defineConfig({
     open: true,
     proxy: {
       '/x': {
-        target: 'http://localhost/x/',
+        target: 'http://127.0.0.1:80',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/x/, '')
-      }
+        rewrite: (path) => path.replace(/^\/x/, '/x/'),
+      },
     }
   },
 
