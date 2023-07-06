@@ -1,7 +1,5 @@
 import axios from 'axios'
-import { ElMessage } from 'element-plus'
 import { getToken } from '@/utils/auth'
-import { log } from '@/utils'
 // import store from '@/store'
 // create an axios instance
 const service = axios.create({
@@ -21,7 +19,6 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['user-token'] = token
     }
-    log(config)
     return config
   },
   error => {
@@ -50,13 +47,12 @@ service.interceptors.response.use(
     }
   },
   error => {
-    log(error)
-    ElMessage({
-      message: error.message,
-      type: 'error',
-      duration: 5 * 1000
-    })
-    return Promise.reject('网络异常：' + error)
+    //ElMessage({
+    //   message: error.message,
+    //   type: 'error',
+    //   duration: 5 * 1000
+    // })
+    return Promise.reject(error)
   }
 )
 export default service

@@ -26,7 +26,7 @@ export default defineConfig({
     open: true,
     proxy: {
       '/x': {
-        target: 'http://127.0.0.1:80',
+        target: 'http://127.0.0.1:6060',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/x/, '/x/'),
       },
