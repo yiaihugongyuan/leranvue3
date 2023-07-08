@@ -1,3 +1,3 @@
 <template>
-    <p>主页组件</p>
+    <p>首页组件</p>
 </template>

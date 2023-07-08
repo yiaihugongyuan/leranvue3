@@ -29,3 +29,23 @@ export function removeToken() {
     return sessionStorage.removeItem(import.meta.env.VITE_TOKEN_KEY)
   }
 }
+
+export function setStorage(k, v) {
+  if (import.meta.env.VITE_TOKEN_MODE === 'cookie') {
+    return Cookies.set(k, v)
+  } else if (import.meta.env.VITE_TOKEN_MODE === 'localStorage') {
+    return localStorage.setItem(k, v)
+  } else if (import.meta.env.VITE_TOKEN_MODE === 'sessionStorage') {
+    return sessionStorage.setItem(k, v)
+  }
+}
+
+export function getStorage(k) {
+  if (import.meta.env.VITE_TOKEN_MODE === 'cookie') {
+    return Cookies.get(k)
+  } else if (import.meta.env.VITE_TOKEN_MODE === 'localStorage') {
+    return localStorage.getItem(k)
+  } else if (import.meta.env.VITE_TOKEN_MODE === 'sessionStorage') {
+    return sessionStorage.getItem(k)
+  }
+}

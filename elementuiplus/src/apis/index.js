@@ -4,6 +4,7 @@ import qs from 'qs'
 
 export function postData(path, data, params = {}) {
     return service({
+        url: path,
         params: {
             ...params
         },
@@ -16,9 +17,8 @@ export function postData(path, data, params = {}) {
 // path = 路径，即action=？
 // data为发送的数据
 export function getData(path, params = {}) {
-    console.log(import.meta.env)
     return service({
-        url: 'path',
+        url: path,
         params: {
             ...params
         }
@@ -29,6 +29,7 @@ export function getData(path, params = {}) {
 // path = 路径，即action=？
 export function delData(path, params = {}) {
     return service({
+        url: path,
         params: {
             ...params
         }

@@ -12,7 +12,6 @@ export const menusStore = defineStore('menus', () => {
             menus.value = r?.meta?.data || []
             actived.value = r?.meta?.actived || ''
             if (menus.value.length <= 0) ElMessage({ type: 'error', message: '导入数据菜单失败' })
-            console.log(r)
         } catch (e) {
             ElMessage({ type: 'error', message: e || 'API Error' })
         }
