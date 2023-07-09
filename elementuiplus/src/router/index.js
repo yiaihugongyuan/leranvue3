@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 import { getToken } from '@/utils/auth'
 const routes = [
     {
-        path: '/', component: () => import('@/layout/appMain.vue'),
+        path: '/', redirect: '/home', component: () => import('@/layout/appMain.vue'),
         children: [
             {
                 path: 'home', component: () => import('@/views/Home.vue')

@@ -5,7 +5,10 @@ import { setToken } from '@/utils/auth'
 import { postData } from '@/apis'
 import { Promotion, Refresh } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
+import MaterialSymbolsSecurityRounded from '~icons/material-symbols/security-rounded'
+import MaterialSymbolsPerson from '~icons/material-symbols/person'
+import IcBaselineLock from '~icons/ic/baseline-lock'
 defineProps({
   showTitle: {
     type: Boolean,
@@ -37,10 +40,49 @@ const profileData = ref({
   'password': '',
   'secode': '',
 })
+const rules = {
+  username: [{
+    required: true,
+    trigger: ['blur', 'change'],
+    message: '请输入用户名'
+  }],
+  password: [{
+    required: true,
+    trigger: ['blur', 'change'],
+    message: '请输入密码'
+  }],
+  secode: [{
+    required: true,
+    trigger: ['blur', 'change'],
+    message: '请输入验证码'
+  },
+  {
+    validator: (rule, value, callback) => {
+      postData('secodecheck', {
+        secode: profileData.value.secode
+      }).then(res => {
+        if (typeof res !== 'object') {
+          callback(new Error('验证码验证失败。'))
+          return
+        }
+        if (res.code > 0) {
+          callback()
+        } else {
+          callback(new Error(res.msg))
+          refreshSecode()
+        }
+      })
+    },
+    trigger: 'blur'
+  }
+  ]
+}
+
 const secodeurl = ref(import.meta.env.VITE_BASE_URL + '/secode')
 const logging = ref(false)
 const refLoginForm = ref()
 const router = useRouter()
+const route = useRoute()
 const doLogin = () => {
   logging.value = true
   refLoginForm.value.validate(
@@ -81,13 +123,13 @@ const doLogin = () => {
         } else {
           ElMessage({
             type: 'success',
-            message: '登陆成功',
+            message: '登陆成功，欢迎您回来！',
             title: '系统通知'
           })
           if (res.code > 0) {
             const jwt = res.data['auth_code'] || ''
             setToken(jwt)
-            router.push('/home')
+            if (route.path == '/login') router.push('/home')
           }
         }
       })
@@ -104,43 +146,13 @@ const reset = (formEl) => {
 const refreshSecode = () => {
   secodeurl.value = import.meta.env.VITE_BASE_URL + '/secode/t/' + Math.random();
 }
-const rules = {
-  username: [{
-    required: true,
-    trigger: ['blur', 'change'],
-    message: '请输入用户名'
-  }],
-  password: [{
-    required: true,
-    trigger: ['blur', 'change'],
-    message: '请输入密码'
-  }],
-  secode: [{
-    required: true,
-    trigger: ['blur', 'change'],
-    message: '请输入验证码'
-  },
-  {
-    validator: (rule, value, callback) => {
-      postData('secodecheck', {
-        secode: profileData.value.secode
-      }).then(res => {
-        if (typeof res !== 'object') {
-          callback(new Error('验证码验证失败。'))
-          return
-        }
-        if (res.code > 0) {
-          callback()
-        } else {
-          callback(new Error(res.msg))
-          refreshSecode()
-        }
-      })
-    },
-    trigger: 'blur'
+const keyDown = (e) => {
+  if (e.keyCode == 13 || e.keyCode == 100) {
+    doLogin()
   }
-  ]
+
 }
+
 
 </script>
 <template>
@@ -148,38 +160,36 @@ const rules = {
     <div class="login-box bantouming-box">
       <h4 class="login-title">账号登录</h4>
       <el-form :status-icon="true" :model="profileData" :rules="rules" ref="refLoginForm" class="login-form"
-        label-width="auto" inline-message>
+        label-width="auto" @keyup.enter="doLogin">
         <el-form-item prop="username">
-          <el-input v-model="profileData.username" type="input" style="width:20em;" placeholder="请输入用户名">
-            <template #prepend>
-              <el-icon>
-                <i-ep-user-filled></i-ep-user-filled>
-              </el-icon>
+          <el-input v-model="profileData.username" type="input" class="inputLine"  placeholder="请输入用户名">
+            <template #prepend><MaterialSymbolsPerson/>
             </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="profileData.password" type="password" style="width:20em;" placeholder="请输入密码">
+          <el-input v-model="profileData.password" type="password" class="inputLine" placeholder="请输入密码">
             <template #prepend>
-              <el-icon>
-                <i-ep-lock></i-ep-lock>
-              </el-icon></template>
+              <IcBaselineLock/>
+            </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="secode">
-          <el-input v-model="profileData.secode" type="input" style="width:14.8em;" placeholder="完成右边的等式">
+          <el-input v-model="profileData.secode" type="input" class="inputLine" placeholder="完成右边的等式">
             <template #prepend>
-              <el-icon>
-                <i-ep-message></i-ep-message>
-              </el-icon>
+              <MaterialSymbolsSecurityRounded></MaterialSymbolsSecurityRounded>
+            </template>
+            <template #append>
+              <el-image
+              style="box-size:border-box;cursor:pointer;width:4em;height:98%;"
+              :src="secodeurl" fit="fill" @click="refreshSecode"></el-image>
             </template>
           </el-input>
-          <el-image
-            style="cursor:pointer;margin-left:0.2em;width:5em;height:29px; border-radius: 5px;border: 0px solid #3e464f;"
-            :src="secodeurl" fit="fill" @click="refreshSecode"></el-image>
+          
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" :loading="logging" @click="doLogin" :icon="Promotion">登录</el-button>
+          <el-button type="primary" :loading="logging" @click="doLogin" :icon="Promotion"
+            @keydown.enter="keyDown()">登录</el-button>
           <el-button type="info" @click="reset(refLoginForm)" :icon="Refresh">重置</el-button>
         </el-form-item>
       </el-form>
@@ -214,10 +224,13 @@ const rules = {
 }
 
 .el-input-group__prepend {
-  width: 2em;
+  width: 3em;
 }
 
 .el-form-item__content {
   color: #0694ff !important
+}
+.el-input-group__append, .el-input-group__prepend{
+  padding:0;
 }
 </style>

@@ -95,7 +95,7 @@ body {
 .login-position-set {
   position: absolute;
   right: 5%;
-  bottom: 5%;
+  bottom: 20%;
   /* 预处理变量var(--login-box-width) */
 
 }

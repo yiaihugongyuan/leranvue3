@@ -1,4 +1,5 @@
 <script setup>
+// 全局导入 element pluss 的 css 文件，不然没有效果。
 import 'element-plus/es/components/message/style/css'
 </script>
 

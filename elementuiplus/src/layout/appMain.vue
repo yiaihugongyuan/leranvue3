@@ -8,7 +8,7 @@ import layoutHeader from './layoutHeader.vue';
             <el-header><layout-header></layout-header></el-header>
             <el-container>
                 <el-aside width="200px"><layout-aside></layout-aside></el-aside>
-                <el-container>
+                <el-container style="height: 100%;">
                     <el-main><router-view></router-view></el-main>
                     <el-footer>Footer</el-footer>
                 </el-container>
@@ -16,3 +16,13 @@ import layoutHeader from './layoutHeader.vue';
         </el-container>
     </div>
 </template>
+
+<style scoped>
+.el-container {
+    flex: 1;
+}
+
+.common-layout {
+    height: 100%;
+}
+</style>

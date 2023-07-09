@@ -23,6 +23,8 @@
   },
   "devDependencies": {
     "@iconify-json/ep": "^1.1.11",
+    "@iconify-json/ic": "^1.1.13",
+    "@iconify-json/material-symbols": "^1.1.50",
     "@rushstack/eslint-patch": "^1.2.0",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/eslint-config-prettier": "^7.1.0",
