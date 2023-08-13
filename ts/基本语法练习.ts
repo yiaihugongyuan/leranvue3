@@ -18,4 +18,8 @@ function print<t>(arg1: t, arg2: number): t {
 // 以下语句中，r 的类型会随着 arg1 的类型而推论确定
 let r = print(2, 2)
 
-print<number>(4,3)
+print<number>(4, 3)
+
+// 双感叹号的用法
+const t:boolean = !!null
+console.log(t)
